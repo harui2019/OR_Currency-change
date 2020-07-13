@@ -1,0 +1,170 @@
+B 3 C o m p i l a t i o n
+B 56 Equation Listing    SOLVE model_1_test Using LP From line 86
+D 59 cost_z
+D 66 mode_io_1
+D 77 tube_io
+B 89 Column Listing      SOLVE model_1_test Using LP From line 86
+E 92 x
+E 115 z
+B 123 Model Statistics    SOLVE model_1_test Using LP From line 86
+B 139 Solution Report     SOLVE model_1_test Using LP From line 86
+F 168 cost_z
+F 172 mode_io_1
+F 182 tube_io
+G 212 x
+G 244 z
+B 254 Equation Listing    SOLVE model_2_test Using LP From line 87
+D 257 mode_io_2
+D 268 tube_io
+B 280 Column Listing      SOLVE model_2_test Using LP From line 87
+E 283 x
+E 304 f
+B 312 Model Statistics    SOLVE model_2_test Using LP From line 87
+B 328 Solution Report     SOLVE model_2_test Using LP From line 87
+F 355 mode_io_2
+F 365 tube_io
+G 395 x
+G 427 f
+B 437 E x e c u t i o n
+I 439 zz
+I 440 k
+B 448 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 451 mode_io_2_fullfunc
+D 462 tube_io
+B 474 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 477 x
+E 498 f
+B 506 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 527 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 554 mode_io_2_fullfunc
+F 564 tube_io
+G 594 x
+G 626 f
+B 636 E x e c u t i o n
+I 636 k
+B 645 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 648 mode_io_2_fullfunc
+D 659 tube_io
+B 671 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 674 x
+E 695 f
+B 703 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 724 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 751 mode_io_2_fullfunc
+F 761 tube_io
+G 791 x
+G 823 f
+B 833 E x e c u t i o n
+I 833 k
+B 842 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 845 mode_io_2_fullfunc
+D 856 tube_io
+B 868 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 871 x
+E 892 f
+B 900 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 921 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 948 mode_io_2_fullfunc
+F 958 tube_io
+G 988 x
+G 1020 f
+B 1030 E x e c u t i o n
+I 1030 k
+B 1039 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 1042 mode_io_2_fullfunc
+D 1053 tube_io
+B 1065 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 1068 x
+E 1089 f
+B 1097 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 1118 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 1145 mode_io_2_fullfunc
+F 1155 tube_io
+G 1185 x
+G 1217 f
+B 1227 E x e c u t i o n
+I 1227 k
+B 1236 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 1239 mode_io_2_fullfunc
+D 1250 tube_io
+B 1262 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 1265 x
+E 1286 f
+B 1294 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 1315 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 1342 mode_io_2_fullfunc
+F 1352 tube_io
+G 1382 x
+G 1414 f
+B 1424 E x e c u t i o n
+I 1424 k
+B 1433 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 1436 mode_io_2_fullfunc
+D 1447 tube_io
+B 1459 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 1462 x
+E 1483 f
+B 1491 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 1512 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 1539 mode_io_2_fullfunc
+F 1549 tube_io
+G 1579 x
+G 1611 f
+B 1621 E x e c u t i o n
+I 1621 k
+B 1630 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 1633 mode_io_2_fullfunc
+D 1644 tube_io
+B 1656 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 1659 x
+E 1680 f
+B 1688 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 1709 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 1736 mode_io_2_fullfunc
+F 1746 tube_io
+G 1776 x
+G 1808 f
+B 1818 E x e c u t i o n
+I 1818 k
+B 1827 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 1830 mode_io_2_fullfunc
+D 1841 tube_io
+B 1853 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 1856 x
+E 1877 f
+B 1885 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 1906 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 1933 mode_io_2_fullfunc
+F 1943 tube_io
+G 1973 x
+G 2005 f
+B 2015 E x e c u t i o n
+I 2015 k
+B 2024 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 2027 mode_io_2_fullfunc
+D 2038 tube_io
+B 2050 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 2053 x
+E 2074 f
+B 2082 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 2103 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 2130 mode_io_2_fullfunc
+F 2140 tube_io
+G 2170 x
+G 2202 f
+B 2212 E x e c u t i o n
+I 2212 k
+B 2221 Equation Listing    SOLVE model_2_demo_1 Using LP From line 107
+D 2224 mode_io_2_fullfunc
+D 2235 tube_io
+B 2247 Column Listing      SOLVE model_2_demo_1 Using LP From line 107
+E 2250 x
+E 2271 f
+B 2279 Model Statistics    SOLVE model_2_demo_1 Using LP From line 107
+B 2300 Solution Report     SOLVE model_2_demo_1 Using LP From line 107
+F 2327 mode_io_2_fullfunc
+F 2337 tube_io
+G 2367 x
+G 2399 f
+B 2409 E x e c u t i o n
+I 2409 ff

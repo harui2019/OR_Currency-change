@@ -1,0 +1,26 @@
+B 3 C o m p i l a t i o n
+B 138 Include File Summary
+B 155 Equation Listing    SOLVE demo_1 Using LP From line 94
+D 158 cost_z
+D 165 node_io
+D 176 tube_max
+D 187 w_set
+B 193 Column Listing      SOLVE demo_1 Using LP From line 94
+E 196 x
+E 218 w
+E 227 z
+B 235 Model Statistics    SOLVE demo_1 Using LP From line 94
+B 251 Solution Report     SOLVE demo_1 Using LP From line 94
+F 280 cost_z
+F 284 node_io
+F 294 tube_max
+F 326 w_set
+G 330 x
+G 362 w
+G 363 z
+B 374 E x e c u t i o n
+I 376 w_max
+I 378 cost_m1
+I 379 isfeasible_m1
+I 380 remain_m1
+I 381 remainrate_m1
