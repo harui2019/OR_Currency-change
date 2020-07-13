@@ -1,0 +1,454 @@
+GAMS 28.2.0  r750fa45 Released Aug 19, 2019 WEX-WEI x86 64bit/MS Windows - 06/08/20 09:54:29 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  Sets
+   2      node "node" /a, b, c, d, e, f, g/
+   3      iter "loop from 1 to infeasible" /1*1000/
+   4  ;
+   5  alias (node, i, j)
+   6  ;
+   7  Table c_z(i,j) "coeff with z"
+INCLUDE    D:\Onedrive\Documents\GAMSStudio\or_report_1.6_model_A_multinode\7nodes\or_report.1.6_cost_mA_7g.csv
+  10  ,a,b,c,d,e,f,g
+  11  a,0,41,34,28,43,36.5,36.5
+  12  b,20,0,18,41,64,35.75,35.75
+  13  c,27,36,0,63,71,49.25,49.25
+  14  d,50,60,52,0,67,57.25,57.25
+  15  e,61,58,57,82,0,64.5,64.5
+  16  f,39.5,48.75,40.25,53.5,61.25,0,48.65
+  17  g,39.5,48.75,40.25,53.5,61.25,48.65,0
+  19  ;
+  20  Table maxflow(i,j) "maxflow of tube"
+INCLUDE    D:\Onedrive\Documents\GAMSStudio\or_report_1.6_model_A_multinode\7nodes\or_report.1.6_maxflow_mA_7g.csv
+  23   ,a,b,c,d,e,f,g
+  24  a,0,140,170,136,234,170,170
+  25  b,124,0,100,187,172,145.75,145.75
+  26  c,142,180,0,100,86,127,127
+  27  d,173,126,60,0,95,113.5,113.5
+  28  e,50,60,30,80,0,55,55
+  29  f,122.25,126.5,90,125.75,146.75,0,122.25
+  30  g,122.25,126.5,90,125.75,146.75,122.25,0
+  32  ;
+  33  Table tube_on(i,j) "prevent i to i"
+  34          a   b   c   d   e   f   g
+  35      a   0   1   1   1   1   1   1
+  36      b   1   0   1   1   1   1   1
+  37      c   1   1   0   1   1   1   1
+  38      d   1   1   1   0   1   1   1
+  39      e   1   1   1   1   0   1   1
+  40      f   1   1   1   1   1   0   1
+  41      g   1   1   1   1   1   1   0
+  42  *using on node_io
+  43  ;
+  44  Parameters
+  45      w_on(node) "1 to a, -1 to e" /a 1, b 0, c 0, d 0, e -1/,
+  46   
+  47      w_max "max I/O" /800/,
+  48      w_miter "max I/O iter to " /1/,
+  49   
+  50      cost_m1 "from 1 to infeasible",
+  51      isfeasible_m1 "record feasible state",
+  52      remain_m1 "as title",
+  53      remainrate_m1 "as title",
+  54   
+  55      cost(iter) "from 1 to infeasible",
+  56      isfeasible(iter) "record feasible state",
+  57      remain(iter) "as title",
+  58      remainrate(iter) "as title"
+  59   
+  60  ;
+  61   
+  62  Variable
+  63      x(i,j) "tube",
+  64      w "I/O",
+  65      z "sum to solve"
+  66  ;
+  67  Positive Variable x
+  68  ;
+  69  Free Variables z
+  70  ;
+  71  Equations
+  72      cost_z "total fee of exchange",
+  73      node_io(i) "I/O of each tube",
+  74      tube_max(i,j) "maxflow of each tube",
+  75   
+  76      w_set "range of w",
+  77      w_set_iter "range of w";
+  78   
+  79      cost_z ..
+  80          z =e= 0.001*sum((i,j), c_z(i,j)*x(i,j));
+  81      node_io(i) ..
+  82          sum(j, tube_on(i,j)*x(i,j)) - sum(j, tube_on(j,i)*x(j,i)) =e= w_on(i)*w;
+  83      tube_max(i,j) ..
+  84          x(i,j) =l= maxflow(i,j);
+  85   
+  86      w_set ..
+  87          w =e= w_max;
+  88      w_set_iter ..
+  89          w =e= w_miter;
+  90   
+  91  Model
+  92      demo_1 "once" /cost_z, node_io, tube_max, w_set/
+  93      demo_2 "loop" /cost_z, node_io, tube_max, w_set_iter/
+  94  *    demo_3 "loop include dismulti opt"
+  95  ;
+  96   
+  97   
+GAMS 28.2.0  r750fa45 Released Aug 19, 2019 WEX-WEI x86 64bit/MS Windows - 06/08/20 09:54:29 Page 2
+once_ver
+C o m p i l a t i o n
+
+
+  99  Solve demo_1 using LP min z;
+ 100   
+ 101  display w_max;
+ 102   
+ 103  cost_m1 = demo_1.ObjVal;
+ 104  isfeasible_m1 = demo_1.ModelStat;
+ 105  remain_m1 = w_max;
+ 106  remainrate_m1 = div(remain_m1, (remain_m1 + cost_m1))
+ 107   
+ 108  display cost_m1, isfeasible_m1, remain_m1, remainrate_m1;
+ 109   
+      $title loop_ver
+      loop (iter,
+          display w_miter, 'total currency';
+          Solve demo_2 using LP min z;
+          
+          cost(iter) = demo_2.ObjVal;
+          isfeasible(iter) = demo_2.ModelStat;
+          remain(iter) = w_miter;
+          remainrate(iter) = div(remain(iter), (remain(iter) + cost(iter)));
+          
+          remain(iter)$(remain(iter) = NA) = 0;
+       
+          display demo_2.ObjVal, demo_2.ModelStat;
+          w_miter = w_miter + 1;
+      )
+       
+      display cost;
+      display isfeasible;
+      display remain;
+      display remainrate;
+       
+      $title output to gdx
+       
+      execute_unload 'or_report.1.6_mA_7g.gdx', cost, isfeasible, remain, remainrate;
+ 136   
+ 137  *$ontext
+ 138  *gdx2csv
+ 143  *$offtext
+GAMS 28.2.0  r750fa45 Released Aug 19, 2019 WEX-WEI x86 64bit/MS Windows - 06/08/20 09:54:29 Page 3
+once_ver
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  D:\Onedrive\Documents\GAMSStudio\or_report_1.6_model_A_multinode\7nodes\or_report_1.6_mA_7g.gms
+     2        9 INCLUDE        1       9  .D:\Onedrive\Documents\GAMSStudio\or_report_1.6_model_A_multinode\7nodes\or_report.1.6_cost_mA_7g.csv
+     3       22 INCLUDE        1      14  .D:\Onedrive\Documents\GAMSStudio\or_report_1.6_model_A_multinode\7nodes\or_report.1.6_maxflow_mA_7g.csv
+     4      139 CALL           1     123  gdxdump or_report.1.6_mA_7g.gdx symb=cost CSVSetText format=csv header = "cost(iter)">> or_report.1.6_mA_7g_out_cost.csv
+     5      140 CALL           1     124  gdxdump or_report.1.6_mA_7g.gdx symb=isfeasible CSVSetText format=csv header = "isfeasible(iter)">> or_report.1.6_mA_7g_out_isfeasible.csv
+     6      141 CALL           1     125  gdxdump or_report.1.6_mA_7g.gdx symb=remain CSVSetText format=csv header ="remain(iter)">> or_report.1.6_mA_7g_out_remain.csv
+     7      142 CALL           1     126  gdxdump or_report.1.6_mA_7g.gdx symb=remainrate CSVSetText format=csv header = "remainrate(iter)">> or_report.1.6_mA_7g_out_remainrate.csv
+
+
+COMPILATION TIME     =        0.125 SECONDS      3 MB  28.2.0 r750fa45 WEX-WEI
+GAMS 28.2.0  r750fa45 Released Aug 19, 2019 WEX-WEI x86 64bit/MS Windows - 06/08/20 09:54:29 Page 4
+once_ver
+Equation Listing    SOLVE demo_1 Using LP From line 99
+
+
+---- cost_z  =E=  total fee of exchange
+
+cost_z..  - 0.041*x(a,b) - 0.034*x(a,c) - 0.028*x(a,d) - 0.043*x(a,e) - 0.0365*x(a,f) - 0.0365*x(a,g) - 0.02*x(b,a) - 0.018*x(b,c) - 0.041*x(b,d) - 0.064*x(b,e) - 0.03575*x(b,f) - 0.03575*x(b,g) - 0.027*x(c,a) - 0.036*x(c,b) - 0.063*x(c,d) - 0.071*x(c,e)
+     
+      - 0.04925*x(c,f) - 0.04925*x(c,g) - 0.05*x(d,a) - 0.06*x(d,b) - 0.052*x(d,c) - 0.067*x(d,e) - 0.05725*x(d,f) - 0.05725*x(d,g) - 0.061*x(e,a) - 0.058*x(e,b) - 0.057*x(e,c) - 0.082*x(e,d) - 0.0645*x(e,f) - 0.0645*x(e,g) - 0.0395*x(f,a)
+     
+      - 0.04875*x(f,b) - 0.04025*x(f,c) - 0.0535*x(f,d) - 0.06125*x(f,e) - 0.04865*x(f,g) - 0.0395*x(g,a) - 0.04875*x(g,b) - 0.04025*x(g,c) - 0.0535*x(g,d) - 0.06125*x(g,e) - 0.04865*x(g,f) + z =E= 0 ; (LHS = 0)
+     
+
+---- node_io  =E=  I/O of each tube
+
+node_io(a)..  x(a,b) + x(a,c) + x(a,d) + x(a,e) + x(a,f) + x(a,g) - x(b,a) - x(c,a) - x(d,a) - x(e,a) - x(f,a) - x(g,a) - w =E= 0 ; (LHS = 0)
+     
+node_io(b)..  - x(a,b) + x(b,a) + x(b,c) + x(b,d) + x(b,e) + x(b,f) + x(b,g) - x(c,b) - x(d,b) - x(e,b) - x(f,b) - x(g,b) =E= 0 ; (LHS = 0)
+     
+node_io(c)..  - x(a,c) - x(b,c) + x(c,a) + x(c,b) + x(c,d) + x(c,e) + x(c,f) + x(c,g) - x(d,c) - x(e,c) - x(f,c) - x(g,c) =E= 0 ; (LHS = 0)
+     
+REMAINING 4 ENTRIES SKIPPED
+
+
+---- tube_max  =L=  maxflow of each tube
+
+tube_max(a,a)..  x(a,a) =L= 0 ; (LHS = 0)
+     
+tube_max(a,b)..  x(a,b) =L= 140 ; (LHS = 0)
+     
+tube_max(a,c)..  x(a,c) =L= 170 ; (LHS = 0)
+     
+REMAINING 46 ENTRIES SKIPPED
+
+
+---- w_set  =E=  range of w
+
+w_set..  w =E= 800 ; (LHS = 0, INFES = 800 ****)
+     
+GAMS 28.2.0  r750fa45 Released Aug 19, 2019 WEX-WEI x86 64bit/MS Windows - 06/08/20 09:54:29 Page 5
+once_ver
+Column Listing      SOLVE demo_1 Using LP From line 99
+
+
+---- x  tube
+
+x(a,a)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       tube_max(a,a)
+
+x(a,b)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -0.041   cost_z
+        1       node_io(a)
+       -1       node_io(b)
+        1       tube_max(a,b)
+
+x(a,c)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -0.034   cost_z
+        1       node_io(a)
+       -1       node_io(c)
+        1       tube_max(a,c)
+
+REMAINING 46 ENTRIES SKIPPED
+
+---- w  I/O
+
+w
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+       -1       node_io(a)
+        1       node_io(e)
+        1       w_set
+
+
+---- z  sum to solve
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       cost_z
+
+GAMS 28.2.0  r750fa45 Released Aug 19, 2019 WEX-WEI x86 64bit/MS Windows - 06/08/20 09:54:29 Page 6
+once_ver
+Model Statistics    SOLVE demo_1 Using LP From line 99
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           4     SINGLE EQUATIONS           58
+BLOCKS OF VARIABLES           3     SINGLE VARIABLES           51
+NON ZERO ELEMENTS           179
+
+
+GENERATION TIME      =        0.000 SECONDS      4 MB  28.2.0 r750fa45 WEX-WEI
+
+
+EXECUTION TIME       =        0.000 SECONDS      4 MB  28.2.0 r750fa45 WEX-WEI
+GAMS 28.2.0  r750fa45 Released Aug 19, 2019 WEX-WEI x86 64bit/MS Windows - 06/08/20 09:54:29 Page 7
+once_ver
+Solution Report     SOLVE demo_1 Using LP From line 99
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   demo_1              OBJECTIVE  z
+     TYPE    LP                  DIRECTION  MINIMIZE
+     SOLVER  CPLEX               FROM LINE  99
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      1 Optimal                   
+**** OBJECTIVE VALUE               66.4141
+
+ RESOURCE USAGE, LIMIT          0.000      1000.000
+ ITERATION COUNT, LIMIT         6    2000000000
+
+IBM ILOG CPLEX   28.2.0 r750fa45 Released Aug 19, 2019 WEI x86 64bit/MS Window
+Cplex 12.9.0.0
+
+Space for names approximately 0.00 Mb
+Use option 'names no' to turn use of names off
+LP status(1): optimal
+Cplex Time: 0.00sec (det. 0.09 ticks)
+Optimal solution found.
+Objective :          66.414125
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU cost_z              .              .              .             1.0000      
+
+  cost_z  total fee of exchange
+
+---- EQU node_io  I/O of each tube
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+a          .              .              .             0.0340      
+b          .              .              .            -0.0070      
+c          .              .              .              .          
+d          .              .              .             0.0060      
+e          .              .              .            -0.0710      
+f          .              .              .            -0.0025      
+g          .              .              .            -0.0025      
+
+---- EQU tube_max  maxflow of each tube
+
+           LOWER          LEVEL          UPPER         MARGINAL
+
+a.a        -INF             .              .              .          
+a.b        -INF          140.0000       140.0000   -6.93889E-18      
+a.c        -INF           37.5000       170.0000          .          
+a.d        -INF           95.0000       136.0000          .          
+a.e        -INF          234.0000       234.0000        -0.0620      
+a.f        -INF          146.7500       170.0000          .          
+a.g        -INF          146.7500       170.0000          .          
+b.a        -INF             .           124.0000          .          
+b.b        -INF             .              .              .          
+b.c        -INF             .           100.0000          .          
+b.d        -INF             .           187.0000          .          
+b.e        -INF          140.0000       172.0000          .          
+b.f        -INF             .           145.7500          .          
+b.g        -INF             .           145.7500          .          
+c.a        -INF             .           142.0000          .          
+c.b        -INF             .           180.0000          .          
+c.c        -INF             .              .              .          
+c.d        -INF             .           100.0000          .          
+c.e        -INF           37.5000        86.0000          .          
+c.f        -INF             .           127.0000          .          
+c.g        -INF             .           127.0000          .          
+d.a        -INF             .           173.0000          .          
+d.b        -INF             .           126.0000          .          
+d.c        -INF             .            60.0000          .          
+d.d        -INF             .              .              .          
+d.e        -INF           95.0000        95.0000        -0.0100      
+d.f        -INF             .           113.5000          .          
+d.g        -INF             .           113.5000          .          
+e.a        -INF             .            50.0000          .          
+e.b        -INF             .            60.0000          .          
+e.c        -INF             .            30.0000          .          
+e.d        -INF             .            80.0000          .          
+e.e        -INF             .              .              .          
+e.f        -INF             .            55.0000          .          
+e.g        -INF             .            55.0000          .          
+f.a        -INF             .           122.2500          .          
+f.b        -INF             .           126.5000          .          
+f.c        -INF             .            90.0000          .          
+f.d        -INF             .           125.7500          .          
+f.e        -INF          146.7500       146.7500        -0.0073      
+f.f        -INF             .              .              .          
+f.g        -INF             .           122.2500          .          
+g.a        -INF             .           122.2500          .          
+g.b        -INF             .           126.5000          .          
+g.c        -INF             .            90.0000          .          
+g.d        -INF             .           125.7500          .          
+g.e        -INF          146.7500       146.7500        -0.0073      
+g.f        -INF             .           122.2500          .          
+g.g        -INF             .              .              .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU w_set            800.0000       800.0000       800.0000         0.1050      
+
+  w_set  range of w
+
+---- VAR x  tube
+
+           LOWER          LEVEL          UPPER         MARGINAL
+
+a.a          .              .            +INF            EPS         
+a.b          .           140.0000        +INF             .          
+a.c          .            37.5000        +INF             .          
+a.d          .            95.0000        +INF             .          
+a.e          .           234.0000        +INF             .          
+a.f          .           146.7500        +INF             .          
+a.g          .           146.7500        +INF             .          
+b.a          .              .            +INF            0.0610      
+b.b          .              .            +INF            EPS         
+b.c          .              .            +INF            0.0250      
+b.d          .              .            +INF            0.0540      
+b.e          .           140.0000        +INF             .          
+b.f          .              .            +INF            0.0403      
+b.g          .              .            +INF            0.0403      
+c.a          .              .            +INF            0.0610      
+c.b          .              .            +INF            0.0290      
+c.c          .              .            +INF            EPS         
+c.d          .              .            +INF            0.0690      
+c.e          .            37.5000        +INF             .          
+c.f          .              .            +INF            0.0468      
+c.g          .              .            +INF            0.0468      
+d.a          .              .            +INF            0.0780      
+d.b          .              .            +INF            0.0470      
+d.c          .              .            +INF            0.0460      
+d.d          .              .            +INF            EPS         
+d.e          .            95.0000        +INF             .          
+d.f          .              .            +INF            0.0488      
+d.g          .              .            +INF            0.0488      
+e.a          .              .            +INF            0.1660      
+e.b          .              .            +INF            0.1220      
+e.c          .              .            +INF            0.1280      
+e.d          .              .            +INF            0.1590      
+e.e          .              .            +INF            EPS         
+e.f          .              .            +INF            0.1330      
+e.g          .              .            +INF            0.1330      
+f.a          .              .            +INF            0.0760      
+f.b          .              .            +INF            0.0442      
+f.c          .              .            +INF            0.0428      
+f.d          .              .            +INF            0.0620      
+f.e          .           146.7500        +INF             .          
+f.f          .              .            +INF            EPS         
+f.g          .              .            +INF            0.0487      
+g.a          .              .            +INF            0.0760      
+g.b          .              .            +INF            0.0442      
+g.c          .              .            +INF            0.0428      
+g.d          .              .            +INF            0.0620      
+g.e          .           146.7500        +INF             .          
+g.f          .              .            +INF            0.0487      
+g.g          .              .            +INF            EPS         
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR w                 -INF          800.0000        +INF             .          
+---- VAR z                 -INF           66.4141        +INF             .          
+
+  w  I/O
+  z  sum to solve
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 28.2.0  r750fa45 Released Aug 19, 2019 WEX-WEI x86 64bit/MS Windows - 06/08/20 09:54:29 Page 8
+once_ver
+E x e c u t i o n
+
+
+----    101 PARAMETER w_max                =      800.000  max I/O
+
+----    108 PARAMETER cost_m1              =       66.414  from 1 to infeasible
+            PARAMETER isfeasible_m1        =        1.000  record feasible state
+            PARAMETER remain_m1            =      800.000  as title
+            PARAMETER remainrate_m1        =        0.923  as title
+
+
+EXECUTION TIME       =        0.000 SECONDS      3 MB  28.2.0 r750fa45 WEX-WEI
+
+
+USER: GAMS Development Corporation, USA              G871201/0000CA-ANY
+      Free Demo, +1 202-342-0180, support@gams.com, www.gams.com DC0000
+
+
+**** FILE SUMMARY
+
+Input      D:\Onedrive\Documents\GAMSStudio\or_report_1.6_model_A_multinode\7nodes\or_report_1.6_mA_7g.gms
+Output     D:\Onedrive\Documents\GAMSStudio\or_report_1.6_model_A_multinode\7nodes\or_report_1.6_mA_7g.lst

@@ -1,0 +1,56 @@
+--- Job or_report_1.5_5e.gms Start 06/20/20 12:45:01 28.2.0 r750fa45 WEX-WEI x86 64bit/MS Windows
+--- GAMS Parameters defined
+    Input D:\Onedrive\Documents\GAMSStudio\or_report_1.5_model_A_multinode_trivial\5nodes\or_report_1.5_5e.gms
+    PageSize 0
+    ScrDir D:\Onedrive\Documents\GAMSStudio\or_report_1.5_model_A_multinode_trivial\5nodes\225a\
+    SysDir D:\GAMS\win64\28.2\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+GAMS 28.2.0   Copyright (C) 1987-2019 GAMS Development. All rights reserved
+Licensee: GAMS Development Corporation, USA              G871201/0000CA-ANY
+          Free Demo, +1 202-342-0180, support@gams.com, www.gams.com DC0000
+--- Starting compilation
+--- or_report_1.5_5e.gms(9) 3 Mb
+--- . or_report.1.5_cost_5e.csv(6) 3 Mb
+--- or_report_1.5_5e.gms(14) 3 Mb
+--- . or_report.1.5_maxflow_5e.csv(6) 3 Mb
+--- or_report_1.5_5e.gms(85) 3 Mb 2 Errors
+*** Error 342 in D:\Onedrive\Documents\GAMSStudio\or_report_1.5_model_A_multinode_trivial\5nodes\or_report_1.5_5e.gms
+    Illegal suffix syntax - has to start with a letter
+*** Error 113 in D:\Onedrive\Documents\GAMSStudio\or_report_1.5_model_A_multinode_trivial\5nodes\or_report_1.5_5e.gms
+    Wrong suffix on model - allowable are
+    1. model specific run time options - will override global
+       OptFile, LimRow, LimCol, IterLim, DomLim, ResLim, OptCR, OptCA
+       SysOut, SolPrint, Bratio, HoldFixed, NodLim, WorkFactor, WorkSpace
+       SavePoint, SolveLink, Integer1, Integer2, Integer3, Integer4
+       Integer5, Threads, FDDelta, FDOpt, MCPRHoldfx, Cheat, CutOff
+       DefPoint, DictFile, PriorOpt, Real1, Real2, Real3, Real4, Real5
+       Reform, ScaleOpt, SolveOpt, TolInfeas, TolInfRep, TolProj
+       TryInt, TryLinear
+    2. set by gams after each solve execution
+       DomUsd, ETAlg, ETSolve, ETSolver, Handle, IterUsd, Line, LinkUsed
+       Marginals, ModelStat, NodUsd, Number, NumDepnd, NumDVar, NumEqu
+       NumInfes, NumNLIns, NumNLNZ, NumNOpt, NumNZ, NumRedef, NumVar
+       NumVarProj, ObjEst, ObjVal, ProcUsed, ResCalc, ResDeriv, ResGen
+       ResIn, ResOut, ResUsd, RObj, SolveStat, SumInfes, MaxInfes
+       MeanInfes, SysIdent, SysVer
+--- or_report_1.5_5e.gms(87) 3 Mb 4 Errors
+*** Error  36 in D:\Onedrive\Documents\GAMSStudio\or_report_1.5_model_A_multinode_trivial\5nodes\or_report_1.5_5e.gms
+    '=' or '..' or ':=' or '$=' operator expected
+    rest of statement ignored
+*** Error 409 in D:\Onedrive\Documents\GAMSStudio\or_report_1.5_model_A_multinode_trivial\5nodes\or_report_1.5_5e.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- or_report_1.5_5e.gms(90) 3 Mb 5 Errors
+*** Error 141 in D:\Onedrive\Documents\GAMSStudio\or_report_1.5_model_A_multinode_trivial\5nodes\or_report_1.5_5e.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- or_report_1.5_5e.gms(128) 3 Mb 5 Errors
+*** Status: Compilation error(s)
+--- Job or_report_1.5_5e.gms Stop 06/20/20 12:45:01 elapsed 0:00:00.098
